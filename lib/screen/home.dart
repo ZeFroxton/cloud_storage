@@ -1,5 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:go_router/go_router.dart';
 
 @immutable
 class Home extends StatefulWidget {
@@ -33,7 +36,7 @@ class _HomeState extends State<Home> {
     );
   }
   //fungsi untuk image picker
-  
+  FilePickerResult? result;
   
   @override
   Widget build(BuildContext context) {
@@ -75,9 +78,7 @@ class _HomeState extends State<Home> {
                       'Mydrive',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                    Icon(Icons.list,
-                    size: 30,
-                    ),
+          
                   ],
                 ),
               
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
         ),
       
       ),
-       drawer: Drawer(
+  drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -104,23 +105,86 @@ class _HomeState extends State<Home> {
               )
             ),
             ListTile(
-              title: Text('Item 1'),
-              onTap: () {
+              leading: Icon(Icons.folder_outlined),
+              title: Text('My Drive'),
+              onTap: () {Navigator.pushNamed(context, "drive_storage");
                 // Action when Item 1 is tapped
+              },
+              
+            ),
+            ListTile(
+              leading: Icon(Icons.folder_zip_outlined),
+              title: Text('Settings'),
+              onTap: () {
+                context.push('/setting');
               },
             ),
             ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Action when Item 2 is tapped
+              leading: Icon(Icons.folder_shared_outlined),
+              title: Text('Shared with me'),
+              onTap: () {Navigator.pushNamed(context, "Shared_page");
+              
               },
             ),
+            ListTile(
+              leading: Icon(Icons.timelapse_outlined),
+              title: Text('Recent'),
+              onTap: (){Navigator.pushNamed(context, "recent_page");
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.star_outline),
+              title: Text('Favorite'),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.delete_outline),
+              title: Text('Trash'),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.cloud_upload_outlined),
+              title: Text('Upload manager'),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings_outlined),
+              title: Text('Settings'),
+              onTap: (){
+
+              },
+            ),
+           
           ],
-        ),
-      ),
+          ),
+    ),
+
+
       body: SafeArea(
         child: ListView(
         children: [
+          if(result != null)
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         const Text('Selected file:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: result?.files.length ?? 0,
+                            itemBuilder: (context, index) {
+                          return Text(result?.files[index].name ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold));
+                        })
+                      ],
+        ),),
          
         ],
       )),
@@ -128,7 +192,18 @@ class _HomeState extends State<Home> {
         distance: 100,
         children: [
           ActionButton(
-            onPressed: () => _showAction(context, 0),
+            onPressed: () async{
+                     result = await FilePicker.platform.pickFiles(allowMultiple: true );
+                      if (result == null) {
+                          print("No file selected");
+                        } else {
+                        setState(() {
+                        });
+                         result?.files.forEach((element) {
+                           print(element.name);
+                         });
+                        }
+    },
             icon: const Icon(Icons.format_size),
           ),
           ActionButton(

@@ -1,4 +1,6 @@
 import 'package:cloud_storage_app/screen/home.dart';
+import 'package:cloud_storage_app/screen/loginpage.dart';
+import 'package:cloud_storage_app/screen/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,16 +10,22 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const Home();
+        return LoginPage();
       },
-      // routes: <RouteBase>[
-      //   GoRoute(
-      //     path: 'detail',
-      //     builder:  (BuildContext context, GoRouterState state) {
-      //       return const Detilpage();
-      //     }
-      //     )
-      // ]
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'home',
+          builder:  (BuildContext context, GoRouterState state) {
+            return const Home();
+          }
+          ),
+          GoRoute(
+          path: 'setting',
+          builder:  (BuildContext context, GoRouterState state) {
+            return const SettingsPage1();
+          }
+          )
+      ]
       )
   ]
   
