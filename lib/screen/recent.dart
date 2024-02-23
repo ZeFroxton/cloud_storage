@@ -1,49 +1,20 @@
-import 'package:cloud_storage_app/component/fab.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
-import 'package:go_router/go_router.dart';
-
-@immutable
-class Home extends StatefulWidget {
-  
-
-  const Home({super.key});
+class RecentScreen extends StatefulWidget {
+  const RecentScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<RecentScreen> createState() => _RecentScreenState();
 }
 
-
-
-class _HomeState extends State<Home> {
-  //fungsi untuk menjalankan Floating Button
-  static const _actionTitles = ['Create Post', 'Upload Photo', 'Upload Video'];
-  void _showAction(BuildContext context, int index) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text(_actionTitles[index]),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('CLOSE'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-  //fungsi untuk image picker
-  FilePickerResult? result;
-  
+class _RecentScreenState extends State<RecentScreen> {
+   FilePickerResult? result;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyDrive'),
+        title: Text('Recent'),
         elevation: 4,
        actions: [
         Padding(
@@ -76,7 +47,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Mydrive',
+                      'Recent',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     Icon(Icons.list,
@@ -109,14 +80,14 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: Text('Item 1'),
-              onTap: () { 
-                context.push("/recent");
+              onTap: () {
+                // Action when Item 1 is tapped
               },
             ),
             ListTile(
               title: Text('Item 2'),
               onTap: () {
-                context.push("/trash");
+                // Action when Item 2 is tapped
               },
             ),
           ],
@@ -140,38 +111,34 @@ class _HomeState extends State<Home> {
                         })
                       ],
                     ),),
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Center(
+                      child: Column(
+                        children: [
+                          Icon(Icons.history,
+                          size: 70,
+                          color: Colors.grey,
+                          ),
+                          Text("Recent",
+                          style: TextStyle(
+                            fontSize: 30,
+                          color: Colors.grey,
+                          ),
+                          ),
+                          Text("Your recent items will appear here",
+                          style: TextStyle(
+                            fontSize: 15,
+                          color: Colors.grey,
+                          ),
+                          )
+                        ],
+                      ),
+                    )
         ],
       )),
-      floatingActionButton: ExpandableFab(
-        distance: 100,
-        children: [
-          ActionButton(
-            onPressed: () async{
-                     result = await FilePicker.platform.pickFiles(allowMultiple: true );
-                      if (result == null) {
-                          print("No file selected");
-                        } else {
-                        setState(() {
-                        });
-                         result?.files.forEach((element) {
-                           print(element.name);
-                         });
-                        }
-                  },
-            icon: const Icon(Icons.format_size),
-          ),
-          ActionButton(
-            onPressed: () => _showAction(context, 1),
-            icon: const Icon(Icons.insert_photo),
-          ),
-          ActionButton(
-            onPressed: () => _showAction(context, 2),
-            icon: const Icon(Icons.videocam),
-          ),
-        ],
-      ),
+     
     );
   }
 }
-
-
